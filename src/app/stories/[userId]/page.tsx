@@ -17,7 +17,8 @@ interface Story {
 }
 
 const StoriesPage: React.FC = () => {
-  const { userId } = useParams<{ userId: string | undefined }>();
+  const params = useParams<{ userId?: string }>();
+  const userId = params?.userId;
   const [stories, setStories] = useState<Story[]>([]);
   const [activeIndex, setActiveIndex] = useState<number>(0);
 
