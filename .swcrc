@@ -1,0 +1,19 @@
+{
+  "jsc": {
+    "parser": {
+      "syntax": "typescript",
+      "jsx": true,
+      "dynamicImport": true
+    },
+    "transform": {
+      "react": {
+        "runtime": "automatic"
+      }
+    },
+    "target": "ES2015"
+  },
+  "module": {
+    "type": "commonjs"
+  },
+  "sourceMaps": "inline"
+}
