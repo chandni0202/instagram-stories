@@ -21,7 +21,7 @@ const StoriesPage: React.FC = () => {
   const [stories, setStories] = useState<Story[]>([]);
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [users, setUsers] = useState<any[]>([]);
-  const currentDuration: number= 5000;
+  const currentDuration: number = 5000;
   const router = useRouter();
   const swiperRef = useRef<any>(null);
   const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
@@ -63,18 +63,23 @@ const StoriesPage: React.FC = () => {
 
   useEffect(() => {
     if (stories.length > 0 && activeIndex === stories.length - 1 && !isTransitioning && !isClosed) {
-      setIsTransitioning(true);
+      setIsTransitioning(true);  
       setTimeout(() => {
         const currentIndex = users.findIndex((user) => user.id === parseInt(storyId || ''));
-        const nextUser = users[currentIndex + 1];
+        let nextUser = users[currentIndex + 1];
+        if(window.location.pathname == "/"){
+          nextUser = null;
+        }
         if (nextUser) {
           router.push(`/stories/${nextUser.id}`);
         } else {
           router.push('/');
+          setIsClosed(true);
         }
         setIsTransitioning(false);
       }, 5000);
     }
+  
   }, [activeIndex, stories.length, router, storyId, users, isTransitioning, isClosed]);
 
   const handleClick = (event: React.MouseEvent) => {
@@ -82,7 +87,7 @@ const StoriesPage: React.FC = () => {
     const clickPosition = event.clientX - (event.currentTarget as HTMLElement).getBoundingClientRect().left;
 
     if (clickPosition < containerWidth / 2) {
-      if (swiperRef.current.swiper.activeIndex === 0) {
+      if (swiperRef.current?.swiper?.activeIndex === 0) {
         const currentUserIndex = users.findIndex((user) => user.id === parseInt(storyId || ''));
         if (currentUserIndex > 0) {
           const prevUser = users[currentUserIndex - 1];
@@ -92,10 +97,23 @@ const StoriesPage: React.FC = () => {
           router.push('/');
         }
       } else {
-        swiperRef.current.swiper.slidePrev();
+        swiperRef.current?.swiper?.slidePrev();
       }
     } else {
-      swiperRef.current.swiper.slideNext();
+      if (swiperRef.current?.swiper?.activeIndex === stories.length - 1) {
+        // Immediate navigation if on the last story
+        const currentIndex = users.findIndex((user) => user.id === parseInt(storyId || ''));
+        const nextUser = users[currentIndex + 1];
+        if (nextUser) {
+          router.push(`/stories/${nextUser.id}`);
+        } else {
+          router.push('/');
+        }
+        // Stop autoplay to prevent it from running after manual navigation
+        swiperRef.current?.swiper?.autoplay.stop();
+      } else {
+        swiperRef.current?.swiper?.slideNext();
+      }
     }
   };
 
@@ -104,17 +122,16 @@ const StoriesPage: React.FC = () => {
       swiperRef.current.swiper.autoplay.stop();
     }
     setIsClosed(true);
-    router.push('/'); // Navigate to home screen
+    localStorage.setItem('isClosed', 'true');
+    router.push('/');
   };
 
   useEffect(() => {
     if (isClosed) {
-      // Ensure any transitions or intervals are cleared when closing
       setIsTransitioning(false);
-      // Clear completed indices if needed
       setCompletedIndices(new Set());
     }
-  }, [isClosed]);
+  }, []);
 
   useEffect(() => {
     localStorage.setItem(`lastIndex_${storyId}`, activeIndex.toString());
