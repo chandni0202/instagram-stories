@@ -8,7 +8,7 @@
     "allowJs": true,
     "strict": true,
     "noEmit": true,
-    "module": "esnext",
+    "module": "",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "incremental": true,
