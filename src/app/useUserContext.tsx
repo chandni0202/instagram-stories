@@ -24,7 +24,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const data = await response.json();
       setUsers(data);
     } catch (error) {
-      console.error('Error fetching users:', error);
+      // console.error('Error fetching users:', error);
     }
   };
 
@@ -41,5 +41,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
 export const useUserContext = () => {
   const context = useContext(UserContext);
+  if (context === undefined) {
+    throw new Error('error');
+  }
   return context;
 };
