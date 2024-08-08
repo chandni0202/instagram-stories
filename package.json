@@ -3,11 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "jest && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest"
+    "test": "jest",
+    "watch": "jest --watch",
+    "coverage": "jest --coverage"
   },
   "dependencies": {
     "jest-environment-jsdom": "^29.7.0",

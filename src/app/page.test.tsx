@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import HomePage from './page'; // Adjust the path if necessary
+import HomePage from './page';
 
 jest.mock('next/navigation', () => ({
   useRouter: () => ({
@@ -9,7 +9,7 @@ jest.mock('next/navigation', () => ({
 }));
 
 
-test('renders user cards and handles user click', async () => {
+test('render homepage', async () => {
   render(<HomePage />);
 
 });
