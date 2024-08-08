@@ -17,7 +17,7 @@ const HomePage: React.FC = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch('/api/users');
+        const response = await fetch('/api/story');
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }

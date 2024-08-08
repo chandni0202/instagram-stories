@@ -10,43 +10,43 @@ interface User {
 const users: User[] = [
   {
     id: 1,
-    name: 'Alice Johnson',
+    name: ' Story1',
     image: '/profile1.png',
     description: 'Birthday'
   },
   {
     id: 2,
-    name: 'Bob Smith',
+    name: 'Story2',
     image: '/profile2.png',
     description: 'Office'
   },
   {
     id: 3,
-    name: 'Charlie Brown',
+    name: 'Story3',
     image: '/profile3.png',
     description: 'Holi'
   },
   {
     id: 4,
-    name: 'Diana Prince',
+    name: 'Story4',
     image: '/profile4.png',
     description: 'Goa'
   },
   {
     id: 5,
-    name: 'Eve Adams',
+    name: 'Story5',
     image: '/profile5.png',
     description: 'Events'
   },
   {
     id: 6,
-    name: 'Eve Adams',
+    name: 'Story6',
     image: '/profile.png',
     description: '😊😁'
   },
   {
     id: 7,
-    name: 'Eve Adams',
+    name: 'Story7',
     image: '/profile.jpg',
     description: 'Walk'
   },
