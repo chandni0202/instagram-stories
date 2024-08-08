@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 interface Story {
   id: number;
   title: string;
-  image: string;
+  image: any;
   description: string;
 }
 
@@ -12,40 +12,122 @@ const storiesByUserId: Record<number, Story[]> = {
     {
       id: 1,
       title: 'A Day in the Life',
-      image: 'https://via.placeholder.com/600x400',
+      image: "/mountain.png",
       description: 'An inspiring story about a day in the life of a hardworking individual.',
     },
     {
       id: 2,
       title: 'The Great Adventure',
-      image: 'https://via.placeholder.com/600x400',
+      image: '/nature.png',
       description: 'An epic tale of adventure and discovery in a fantastical world.',
     },
     {
       id: 3,
       title: 'The Great Adventure',
-      image: 'https://via.placeholder.com/600x400',
+      image: '/mountain.png',
       description: 'An epic tale of adventure and discovery in a fantastical world.',
     },
     {
       id: 4,
       title: 'The Great Adventure',
-      image: 'https://via.placeholder.com/600x400',
+      image: '/nature.png',
       description: 'An epic tale of adventure and discovery in a fantastical world.',
     },
   ],
   2: [
     {
-      id: 3,
+      id: 1,
       title: 'Mystery of the Lost City',
-      image: 'https://via.placeholder.com/600x400',
+      image: '/nature.png',
       description: 'A thrilling mystery about a city lost in time and the secrets it holds.',
     },
     {
-      id: 4,
+      id: 2,
       title: 'The Hidden Treasure',
-      image: 'https://via.placeholder.com/600x400',
+      image: '/nature.png',
       description: 'An exciting adventure to find hidden treasures.',
+    },
+  ],
+  3: [
+    {
+      id: 1,
+      title: 'Mystery of the Lost City',
+      image: '/nature.png',
+      description: 'A thrilling mystery about a city lost in time and the secrets it holds.',
+    },
+    {
+      id: 2,
+      title: 'The Hidden Treasure',
+      image: '/nature.png',
+      description: 'An exciting adventure to find hidden treasures.',
+    },
+  ],
+  4: [
+    {
+      id: 1,
+      title: 'Mystery of the Lost City',
+      image: '/nature.png',
+      description: 'A thrilling mystery about a city lost in time and the secrets it holds.',
+    },
+    {
+      id: 2,
+      title: 'The Hidden Treasure',
+      image: '/nature.png',
+      description: 'An exciting adventure to find hidden treasures.',
+    },
+  ],
+  5: [
+    {
+      id: 1,
+      title: 'Mystery of the Lost City',
+      image: '/nature.png',
+      description: 'A thrilling mystery about a city lost in time and the secrets it holds.',
+    },
+    {
+      id: 2,
+      title: 'The Hidden Treasure',
+      image: '/nature.png',
+      description: 'An exciting adventure to find hidden treasures.',
+    },
+  ],
+  6: [
+    {
+      id: 1,
+      title: 'Mystery of the Lost City',
+      image: '/nature.png',
+      description: 'A thrilling mystery about a city lost in time and the secrets it holds.',
+    },
+    {
+      id: 2,
+      title: 'The Hidden Treasure',
+      image: '/nature.png',
+      description: 'An exciting adventure to find hidden treasures.',
+    },
+  ], 
+  7: [
+    {
+      id: 1,
+      title: 'A Day in the Life',
+      image: "/mountain.png",
+      description: 'An inspiring story about a day in the life of a hardworking individual.',
+    },
+    {
+      id: 2,
+      title: 'The Great Adventure',
+      image: '/nature.png',
+      description: 'An epic tale of adventure and discovery in a fantastical world.',
+    },
+    {
+      id: 3,
+      title: 'The Great Adventure',
+      image: '/mountain.png',
+      description: 'An epic tale of adventure and discovery in a fantastical world.',
+    },
+    {
+      id: 4,
+      title: 'The Great Adventure',
+      image: '/nature.png',
+      description: 'An epic tale of adventure and discovery in a fantastical world.',
     },
   ],
   // Add more users and their stories here
