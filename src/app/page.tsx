@@ -1,14 +1,13 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
 import styles from './page.module.css';
 
 interface User {
   id: number;
   name: string;
   image: string;
+  description: string;
 }
 
 const HomePage: React.FC = () => {
@@ -37,24 +36,21 @@ const HomePage: React.FC = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <Swiper
-        spaceBetween={10}
-        slidesPerView="auto"
-        centeredSlides={true}
-        grabCursor={true}
-        className={styles.swiper}
-      >
+    <>
+      {/* <div>Instagram</div> */}
+      <div className={styles.container}>
         {users.map((user) => (
-          <SwiperSlide key={user.id} className={styles.slide} onClick={() => handleUserClick(user.id)}>
-            <img src={user.image} alt={user.name} className={styles.thumbnail} />
-            <div className={styles.overlay}>
-              <h2>{user.name}</h2>
+          <div key={user.id} className={styles.userCard} onClick={() => handleUserClick(user.id)}>
+            <div className={styles.storyCircle}>
+              <img src={user.image} alt={user.name} />
             </div>
-          </SwiperSlide>
+            <div className={styles.userDescription}>
+              {user.description}
+            </div>
+          </div>
         ))}
-      </Swiper>
-    </div>
+      </div>
+    </>
   );
 };
 

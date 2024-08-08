@@ -1,5 +1,6 @@
 'use client';
 import React from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import styles from './StoryList.module.css';
 
@@ -7,6 +8,7 @@ interface Story {
   id: number;
   title: string;
   image: string;
+  description: string
 }
 
 interface StoryListProps {
@@ -28,7 +30,7 @@ const StoryList: React.FC<StoryListProps> = ({ stories }) => {
           className={styles.storyItem}
           onClick={() => handleStoryClick(story.id)}
         >
-          <img src={story.image} alt={story.title} className={styles.storyImage} />
+          <Image src={story.image} alt={story.title} className={styles.storyImage} />
         </div>
       ))}
     </div>
