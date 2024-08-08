@@ -7,6 +7,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import styles from './StoryViewer.module.css';
 import ProgressBar from '../../../components/progressBar';
+import { useUserContext } from '../../useUserContext';
 
 interface Story {
   id: number;
@@ -18,9 +19,9 @@ interface Story {
 const StoriesPage: React.FC = () => {
   const params = useParams<{ storyId?: string }>();
   const storyId = params?.storyId;
+  const { users } = useUserContext();
   const [stories, setStories] = useState<Story[]>([]);
   const [activeIndex, setActiveIndex] = useState<number>(0);
-  const [users, setUsers] = useState<any[]>([]);
   const currentDuration: number = 5000;
   const router = useRouter();
   const swiperRef = useRef<any>(null);
@@ -43,29 +44,15 @@ const StoriesPage: React.FC = () => {
     }
   }, [storyId]);
 
-  const fetchUsers = useCallback(async () => {
-    try {
-      const response = await fetch('/api/story');
-      const data = await response.json();
-      setUsers(data);
-    } catch (error) {
-      console.error('Error fetching users:', error);
-    }
-  }, []);
-
   useEffect(() => {
     fetchStories();
   }, [fetchStories]);
 
   useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers]);
-
-  useEffect(() => {
     if (stories.length > 0 && activeIndex === stories.length - 1 && !isTransitioning && !isClosed) {
       setIsTransitioning(true);  
       setTimeout(() => {
-        const currentIndex = users.findIndex((user) => user.id === parseInt(storyId || ''));
+        const currentIndex = users.findIndex((user: any) => user.id === parseInt(storyId || ''));
         let nextUser = users[currentIndex + 1];
         if(window.location.pathname == "/"){
           nextUser = null;
@@ -88,7 +75,7 @@ const StoriesPage: React.FC = () => {
 
     if (clickPosition < containerWidth / 2) {
       if (swiperRef.current?.swiper?.activeIndex === 0) {
-        const currentUserIndex = users.findIndex((user) => user.id === parseInt(storyId || ''));
+        const currentUserIndex = users.findIndex((user: any) => user.id === parseInt(storyId || ''));
         if (currentUserIndex > 0) {
           const prevUser = users[currentUserIndex - 1];
           localStorage.setItem(`lastIndex_${storyId}`, activeIndex.toString());
@@ -102,7 +89,7 @@ const StoriesPage: React.FC = () => {
     } else {
       if (swiperRef.current?.swiper?.activeIndex === stories.length - 1) {
         // Immediate navigation if on the last story
-        const currentIndex = users.findIndex((user) => user.id === parseInt(storyId || ''));
+        const currentIndex = users.findIndex((user: any) => user.id === parseInt(storyId || ''));
         const nextUser = users[currentIndex + 1];
         if (nextUser) {
           router.push(`/stories/${nextUser.id}`);
@@ -138,8 +125,9 @@ const StoriesPage: React.FC = () => {
     setCompletedIndices((prev) => new Set(prev).add(activeIndex));
   }, [activeIndex, storyId]);
 
-  const currentUser = users?.find((user) => user.id === parseInt(storyId || ''));
+  const currentUser = users?.find((user: any) => user.id === parseInt(storyId || ''));
   const profileImageUrl = currentUser?.image;
+  const description = currentUser?.description;
 
   return (
     <div className={styles.container}>
@@ -172,7 +160,10 @@ const StoriesPage: React.FC = () => {
             {stories.map((story) => (
               <SwiperSlide key={story.id}>
                 <div className={styles.storyContent}>
+                  <div>
                   <img src={profileImageUrl} className={styles.profileImg} width="50px" height="50px" alt="Profile" />
+                  <span className={styles.profileDes}>{description}</span>
+                  </div>
                   <button className={styles.closeButton} onClick={handleClose}>×</button>
                   <img src={story.image} alt={story.title} className={styles.storyImage} />
                 </div>
