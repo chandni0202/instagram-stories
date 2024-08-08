@@ -24,7 +24,6 @@ const HomePage: React.FC = () => {
         const data = await response.json();
         setUsers(data);
       } catch (error) {
-        console.error('Error fetching users:', error);
       }
     };
 
