@@ -36,7 +36,6 @@ const HomePage: React.FC = () => {
 
   return (
     <>
-      {/* <div>Instagram</div> */}
       <div className={styles.container}>
         {users.map((user) => (
           <div key={user.id} className={styles.userCard} onClick={() => handleUserClick(user.id)}>

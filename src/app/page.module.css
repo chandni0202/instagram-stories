@@ -1,37 +1,38 @@
 .container {
   display: flex;
+  margin: 10px;
   margin-top: 20px;
 }
 
 .userCard {
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center aligns items horizontally */
-  text-align: center; /* Center aligns text */
+  align-items: center;
+  text-align: center;
 }
 
 .storyCircle {
-  width: 80px; /* Set the circle width */
-  height: 80px; /* Set the circle height */
-  border-radius: 50%; /* Makes it a circle */
-  overflow: hidden; /* Ensures the image fits within the circle */
-  cursor: pointer; /* Changes cursor to pointer on hover */
-  display: flex; /* Use flex to center image inside */
-  align-items: center; /* Center aligns image vertically */
-  justify-content: center; /* Center aligns image horizontally */
-  background-color: #f0f0f0; /* Optional: add background color */
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+  display: flex; 
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0;
   margin-right: 8px;
   border: 2px solid rgb(255, 0, 93);
 }
 
 .storyCircle img {
-  width: 100%; /* Ensure the image covers the circle */
-  height: 100%; /* Ensure the image covers the circle */
-  object-fit: cover; /* Keeps aspect ratio and covers the container */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .userDescription {
   font-size: 14px;
-  color: #333; /* Adjust text color as needed */
-  margin-top: 5px; /* Adds spacing between image and description */
+  color: #333;
+  margin-top: 5px;
 }

@@ -21,10 +21,12 @@ const StoriesPage: React.FC = () => {
   const [stories, setStories] = useState<Story[]>([]);
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [users, setUsers] = useState<any[]>([]);
-  const [currentDuration, setCurrentDuration] = useState<number>(5000);
+  const currentDuration: number= 5000;
   const router = useRouter();
   const swiperRef = useRef<any>(null);
   const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
+  const [completedIndices, setCompletedIndices] = useState<Set<number>>(new Set());
+  const [isClosed, setIsClosed] = useState<boolean>(false);
 
   const fetchStories = useCallback(async () => {
     try {
@@ -60,7 +62,7 @@ const StoriesPage: React.FC = () => {
   }, [fetchUsers]);
 
   useEffect(() => {
-    if (stories.length > 0 && activeIndex === stories.length - 1 && !isTransitioning) {
+    if (stories.length > 0 && activeIndex === stories.length - 1 && !isTransitioning && !isClosed) {
       setIsTransitioning(true);
       setTimeout(() => {
         const currentIndex = users.findIndex((user) => user.id === parseInt(userId || ''));
@@ -71,9 +73,9 @@ const StoriesPage: React.FC = () => {
           router.push('/');
         }
         setIsTransitioning(false);
-      }, 500);
+      }, 5000);
     }
-  }, [activeIndex, stories.length, router, userId, users, isTransitioning]);
+  }, [activeIndex, stories.length, router, userId, users, isTransitioning, isClosed]);
 
   const handleClick = (event: React.MouseEvent) => {
     const containerWidth = (event.currentTarget as HTMLElement).offsetWidth;
@@ -86,6 +88,8 @@ const StoriesPage: React.FC = () => {
           const prevUser = users[currentUserIndex - 1];
           localStorage.setItem(`lastIndex_${userId}`, activeIndex.toString());
           router.push(`/stories/${prevUser.id}`);
+        } else {
+          router.push('/');
         }
       } else {
         swiperRef.current.swiper.slidePrev();
@@ -96,16 +100,25 @@ const StoriesPage: React.FC = () => {
   };
 
   const handleClose = () => {
-    // Stop any ongoing autoplay transitions
     if (swiperRef.current) {
       swiperRef.current.swiper.autoplay.stop();
     }
-    // Navigate to the homepage
-    router.push('/');
+    setIsClosed(true);
+    router.push('/'); // Navigate to home screen
   };
 
   useEffect(() => {
+    if (isClosed) {
+      // Ensure any transitions or intervals are cleared when closing
+      setIsTransitioning(false);
+      // Clear completed indices if needed
+      setCompletedIndices(new Set());
+    }
+  }, [isClosed]);
+
+  useEffect(() => {
     localStorage.setItem(`lastIndex_${userId}`, activeIndex.toString());
+    setCompletedIndices((prev) => new Set(prev).add(activeIndex));
   }, [activeIndex, userId]);
 
   const currentUser = users?.find((user) => user.id === parseInt(userId || ''));
@@ -118,7 +131,9 @@ const StoriesPage: React.FC = () => {
           <ProgressBar
             key={index}
             isActive={activeIndex === index}
+            isCompleted={completedIndices.has(index)}
             duration={currentDuration}
+            reset={isClosed}
           />
         ))}
       </div>
@@ -140,13 +155,9 @@ const StoriesPage: React.FC = () => {
             {stories.map((story) => (
               <SwiperSlide key={story.id}>
                 <div className={styles.storyContent}>
-                <img src={profileImageUrl} className={styles.profileImg} width="50px" height="50px"></img>
+                  <img src={profileImageUrl} className={styles.profileImg} width="50px" height="50px" alt="Profile" />
                   <button className={styles.closeButton} onClick={handleClose}>×</button>
                   <img src={story.image} alt={story.title} className={styles.storyImage} />
-                  {/* <div className={styles.storyDetails}>
-                    <h2>{story.title}</h2>
-                    <p>{story.description}</p>
-                  </div> */}
                 </div>
               </SwiperSlide>
             ))}

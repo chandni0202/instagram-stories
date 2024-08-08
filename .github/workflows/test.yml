@@ -1,16 +1,16 @@
 name: Run Tests
 
 on:
-  push:
+  push:  # Trigger on push requests 
     branches:
-      - main  # Trigger on pushes to the main branch
-  pull_request:
+      - main  
+  pull_request:  # Trigger on pull requests 
     branches:
-      - main  # Trigger on pull requests targeting the main branch
+      - main 
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # latest version of ubuntu runner by github
 
     steps:
     - name: Checkout code

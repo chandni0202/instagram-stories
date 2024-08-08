@@ -12,43 +12,43 @@ const users: User[] = [
     id: 1,
     name: 'Alice Johnson',
     image: '/profile1.png',
-    description: 'holi'
+    description: 'Birthday'
   },
   {
     id: 2,
     name: 'Bob Smith',
     image: '/profile2.png',
-    description: 'holi'
+    description: 'Office'
   },
   {
     id: 3,
     name: 'Charlie Brown',
     image: '/profile3.png',
-    description: 'holi'
+    description: 'Holi'
   },
   {
     id: 4,
     name: 'Diana Prince',
     image: '/profile4.png',
-    description: 'holi'
+    description: 'Goa'
   },
   {
     id: 5,
     name: 'Eve Adams',
     image: '/profile5.png',
-    description: 'holi'
+    description: 'Events'
   },
   {
     id: 6,
     name: 'Eve Adams',
     image: '/profile.png',
-    description: 'holi'
+    description: '😊😁'
   },
   {
     id: 7,
     name: 'Eve Adams',
     image: '/profile.jpg',
-    description: 'holi'
+    description: 'Walk'
   },
 ];
 

@@ -1,13 +1,10 @@
-/* Ensure the container uses the full viewport height and handles overflow */
 .container {
   display: flex;
   flex-direction: column;
   height: 100vh;
   overflow: hidden;
-  position: relative; /* Added to make sure absolute positioning works inside it */
+  position: relative;
 }
-
-/* Position the progress bar at the top of the viewport */
 .progressContainer {
   display: flex;
   justify-content: center;
@@ -15,83 +12,75 @@
   top: 10px;
   width: 100%;
   height: 10px;
-  /* background-color: #eee; */
-  z-index: 10; /* Ensure the progress bar is above other content */
+  z-index: 10;
 }
 
-/* Style for individual progress dots */
 .progressDot {
   height: 8px;
   border-radius: 4px;
   margin: 0 2px;
-  background-color: #ccc; /* Default background color for inactive dots */
+  background-color: #ccc;
   transition: background-color 0.3s ease;
 }
 
-/* Adjust margin to prevent story content from being hidden behind the progress bar */
 .mainStory {
   flex: 1;
   overflow: hidden;
-  position: relative; /* Ensure child elements are positioned relative to this */
+  position: relative;
 }
 
-/* Make sure the Swiper takes up the full size of its container */
 .mainSwiper {
   width: 100%;
   height: 100%;
 }
 
-/* Style for each story slide */
 .storyContent {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100%;
-  position: relative; /* Make sure absolutely positioned elements are placed correctly */
+  position: relative;
 }
 
-/* Ensure the image covers the entire slide */
 .storyImage {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Covers the container while maintaining aspect ratio */
+  object-fit: cover;
 }
 
-/* Style for the story details overlay */
 .storyDetails {
   position: absolute;
   bottom: 10%;
   text-align: center;
   color: #fff;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background for readability */
+  background-color: rgba(0, 0, 0, 0.5);
   padding: 10px;
   border-radius: 5px;
-  width: 80%; /* Centered and responsive width */
+  width: 80%;
 }
 
-/* Style for the close button */
 .closeButton {
   position: absolute;
-  top: 5px; /* Distance from the top edge of the container */
-  right: 10px; /* Distance from the right edge of the container */
+  top: 2px;
+  right: 10px;
   color: #fff;
   border: none;
   font-size: 30px;
   cursor: pointer;
   padding: 10px;
   border-radius: 50%;
-  z-index: 20; /* Ensure the button is above other content */
+  z-index: 20;
 }
 
 .profileImg{
   position: absolute;
-  top: 10px; /* Distance from the top edge of the container */
-  left: 10px; /* Distance from the right edge of the container */
+  top: 10px;
+  left: 10px;
   color: #fff;
   border: none;
   cursor: pointer;
   padding: 10px;
   border-radius: 50%;
-  z-index: 20; /* Ensure the button is above other content */
+  z-index: 20;
 }
