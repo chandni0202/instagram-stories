@@ -31,11 +31,14 @@ Typescript,
 Jest,
 react testing library,
 SWC,
+
 Note :Some of the tech stack due to use of create-next-app (use it if required for your project)
 ## Deployment
 https://stage-insta-story-git-main-chandni0202s-projects.vercel.app/
 ## CI/CD Pipeline
 github - run test
 ##  API Endpoints
-/api/story
+/api/story,
+
 /api/users/[id]/stories
+
