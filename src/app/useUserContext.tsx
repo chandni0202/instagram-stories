@@ -41,8 +41,5 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
 export const useUserContext = () => {
   const context = useContext(UserContext);
-  if (context === undefined) {
-    throw new Error('error');
-  }
   return context;
 };
