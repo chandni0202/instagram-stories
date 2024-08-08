@@ -7,6 +7,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import styles from './StoryViewer.module.css';
 import ProgressBar from '../../../components/progressBar';
+import { useUserContext } from '../../useUserContext';
 
 interface Story {
   id: number;
@@ -18,10 +19,10 @@ interface Story {
 const StoriesPage: React.FC = () => {
   const params = useParams<{ storyId?: string }>();
   const storyId = params?.storyId;
+  const { users } = useUserContext();
   const [stories, setStories] = useState<Story[]>([]);
   const [activeIndex, setActiveIndex] = useState<number>(0);
-  const [users, setUsers] = useState<any[]>([]);
-  const currentDuration: number= 5000;
+  const currentDuration: number = 5000;
   const router = useRouter();
   const swiperRef = useRef<any>(null);
   const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
@@ -43,38 +44,29 @@ const StoriesPage: React.FC = () => {
     }
   }, [storyId]);
 
-  const fetchUsers = useCallback(async () => {
-    try {
-      const response = await fetch('/api/story');
-      const data = await response.json();
-      setUsers(data);
-    } catch (error) {
-      console.error('Error fetching users:', error);
-    }
-  }, []);
-
   useEffect(() => {
     fetchStories();
   }, [fetchStories]);
 
   useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers]);
-
-  useEffect(() => {
     if (stories.length > 0 && activeIndex === stories.length - 1 && !isTransitioning && !isClosed) {
-      setIsTransitioning(true);
+      setIsTransitioning(true);  
       setTimeout(() => {
-        const currentIndex = users.findIndex((user) => user.id === parseInt(storyId || ''));
-        const nextUser = users[currentIndex + 1];
+        const currentIndex = users.findIndex((user: any) => user.id === parseInt(storyId || ''));
+        let nextUser = users[currentIndex + 1];
+        if(window.location.pathname == "/"){
+          nextUser = null;
+        }
         if (nextUser) {
           router.push(`/stories/${nextUser.id}`);
         } else {
           router.push('/');
+          setIsClosed(true);
         }
         setIsTransitioning(false);
       }, 5000);
     }
+  
   }, [activeIndex, stories.length, router, storyId, users, isTransitioning, isClosed]);
 
   const handleClick = (event: React.MouseEvent) => {
@@ -82,8 +74,8 @@ const StoriesPage: React.FC = () => {
     const clickPosition = event.clientX - (event.currentTarget as HTMLElement).getBoundingClientRect().left;
 
     if (clickPosition < containerWidth / 2) {
-      if (swiperRef.current.swiper.activeIndex === 0) {
-        const currentUserIndex = users.findIndex((user) => user.id === parseInt(storyId || ''));
+      if (swiperRef.current?.swiper?.activeIndex === 0) {
+        const currentUserIndex = users.findIndex((user: any) => user.id === parseInt(storyId || ''));
         if (currentUserIndex > 0) {
           const prevUser = users[currentUserIndex - 1];
           localStorage.setItem(`lastIndex_${storyId}`, activeIndex.toString());
@@ -92,10 +84,23 @@ const StoriesPage: React.FC = () => {
           router.push('/');
         }
       } else {
-        swiperRef.current.swiper.slidePrev();
+        swiperRef.current?.swiper?.slidePrev();
       }
     } else {
-      swiperRef.current.swiper.slideNext();
+      if (swiperRef.current?.swiper?.activeIndex === stories.length - 1) {
+        // Immediate navigation if on the last story
+        const currentIndex = users.findIndex((user: any) => user.id === parseInt(storyId || ''));
+        const nextUser = users[currentIndex + 1];
+        if (nextUser) {
+          router.push(`/stories/${nextUser.id}`);
+        } else {
+          router.push('/');
+        }
+        // Stop autoplay to prevent it from running after manual navigation
+        swiperRef.current?.swiper?.autoplay.stop();
+      } else {
+        swiperRef.current?.swiper?.slideNext();
+      }
     }
   };
 
@@ -104,25 +109,25 @@ const StoriesPage: React.FC = () => {
       swiperRef.current.swiper.autoplay.stop();
     }
     setIsClosed(true);
-    router.push('/'); // Navigate to home screen
+    localStorage.setItem('isClosed', 'true');
+    router.push('/');
   };
 
   useEffect(() => {
     if (isClosed) {
-      // Ensure any transitions or intervals are cleared when closing
       setIsTransitioning(false);
-      // Clear completed indices if needed
       setCompletedIndices(new Set());
     }
-  }, [isClosed]);
+  }, []);
 
   useEffect(() => {
     localStorage.setItem(`lastIndex_${storyId}`, activeIndex.toString());
     setCompletedIndices((prev) => new Set(prev).add(activeIndex));
   }, [activeIndex, storyId]);
 
-  const currentUser = users?.find((user) => user.id === parseInt(storyId || ''));
+  const currentUser = users?.find((user: any) => user.id === parseInt(storyId || ''));
   const profileImageUrl = currentUser?.image;
+  const description = currentUser?.description;
 
   return (
     <div className={styles.container}>
@@ -155,7 +160,10 @@ const StoriesPage: React.FC = () => {
             {stories.map((story) => (
               <SwiperSlide key={story.id}>
                 <div className={styles.storyContent}>
+                  <div>
                   <img src={profileImageUrl} className={styles.profileImg} width="50px" height="50px" alt="Profile" />
+                  <span className={styles.profileDes}>{description}</span>
+                  </div>
                   <button className={styles.closeButton} onClick={handleClose}>×</button>
                   <img src={story.image} alt={story.title} className={styles.storyImage} />
                 </div>
