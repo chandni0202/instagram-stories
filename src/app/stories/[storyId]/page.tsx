@@ -16,8 +16,8 @@ interface Story {
 }
 
 const StoriesPage: React.FC = () => {
-  const params = useParams<{ userId?: string }>();
-  const userId = params?.userId;
+  const params = useParams<{ storyId?: string }>();
+  const storyId = params?.storyId;
   const [stories, setStories] = useState<Story[]>([]);
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [users, setUsers] = useState<any[]>([]);
@@ -30,22 +30,22 @@ const StoriesPage: React.FC = () => {
 
   const fetchStories = useCallback(async () => {
     try {
-      const response = await fetch(`/api/users/${userId}/stories`);
+      const response = await fetch(`/api/users/${storyId}/stories`);
       const data = await response.json();
       setStories(data);
 
-      const lastIndex = localStorage.getItem(`lastIndex_${userId}`);
+      const lastIndex = localStorage.getItem(`lastIndex_${storyId}`);
       if (lastIndex) {
         setActiveIndex(parseInt(lastIndex, 10));
       }
     } catch (error) {
       console.error('Error fetching stories:', error);
     }
-  }, [userId]);
+  }, [storyId]);
 
   const fetchUsers = useCallback(async () => {
     try {
-      const response = await fetch('/api/users');
+      const response = await fetch('/api/story');
       const data = await response.json();
       setUsers(data);
     } catch (error) {
@@ -65,7 +65,7 @@ const StoriesPage: React.FC = () => {
     if (stories.length > 0 && activeIndex === stories.length - 1 && !isTransitioning && !isClosed) {
       setIsTransitioning(true);
       setTimeout(() => {
-        const currentIndex = users.findIndex((user) => user.id === parseInt(userId || ''));
+        const currentIndex = users.findIndex((user) => user.id === parseInt(storyId || ''));
         const nextUser = users[currentIndex + 1];
         if (nextUser) {
           router.push(`/stories/${nextUser.id}`);
@@ -75,7 +75,7 @@ const StoriesPage: React.FC = () => {
         setIsTransitioning(false);
       }, 5000);
     }
-  }, [activeIndex, stories.length, router, userId, users, isTransitioning, isClosed]);
+  }, [activeIndex, stories.length, router, storyId, users, isTransitioning, isClosed]);
 
   const handleClick = (event: React.MouseEvent) => {
     const containerWidth = (event.currentTarget as HTMLElement).offsetWidth;
@@ -83,10 +83,10 @@ const StoriesPage: React.FC = () => {
 
     if (clickPosition < containerWidth / 2) {
       if (swiperRef.current.swiper.activeIndex === 0) {
-        const currentUserIndex = users.findIndex((user) => user.id === parseInt(userId || ''));
+        const currentUserIndex = users.findIndex((user) => user.id === parseInt(storyId || ''));
         if (currentUserIndex > 0) {
           const prevUser = users[currentUserIndex - 1];
-          localStorage.setItem(`lastIndex_${userId}`, activeIndex.toString());
+          localStorage.setItem(`lastIndex_${storyId}`, activeIndex.toString());
           router.push(`/stories/${prevUser.id}`);
         } else {
           router.push('/');
@@ -117,11 +117,11 @@ const StoriesPage: React.FC = () => {
   }, [isClosed]);
 
   useEffect(() => {
-    localStorage.setItem(`lastIndex_${userId}`, activeIndex.toString());
+    localStorage.setItem(`lastIndex_${storyId}`, activeIndex.toString());
     setCompletedIndices((prev) => new Set(prev).add(activeIndex));
-  }, [activeIndex, userId]);
+  }, [activeIndex, storyId]);
 
-  const currentUser = users?.find((user) => user.id === parseInt(userId || ''));
+  const currentUser = users?.find((user) => user.id === parseInt(storyId || ''));
   const profileImageUrl = currentUser?.image;
 
   return (
